@@ -1,15 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { NewNoteInput } from './NewNoteInput';
+import { useSelector, useDispatch } from 'react-redux';
+import { NotesState } from './notesReducer';
 
 function App() {
+  const notes = useSelector<NotesState,NotesState['notes'] >(state => state.notes);
+  const dispatch = useDispatch()
+
+  const addNote = (note:string) => {
+    dispatch({type: "ADD_NOTE", payload: note})
+  }
   return (
     <div className="App">
-        <NewNoteInput addNote={alert}/>
+        <NewNoteInput addNote={addNote}/>
         <hr />
         <ul>
-          <li>Some Note</li>
+          {notes.map((note, i) => {
+            return (
+            <li key={i}>{note}</li>
+          )})}
         </ul>
     </div>
   );
